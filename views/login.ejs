@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/login.css"/>
+    <title>Login</title>
+	<link rel="icon" href="/img/favicon.png">
+</head>
+<body>
+<div class="login">
+    <img width="64" height="64" src="/img/icons8-radon-64.png" alt="logo">
+	<h4>PIN: <input id="pin" size="4" type="password" name="pin" maxlength="4" autofocus onkeyup="myPinValidation()"></h4>
+    <a id="btnlogin" href="/auth" > Login </a>
+</div>
+</body>
+
+<script>
+function getPinValue(){
+	let pinValue = document.getElementById("pin").value;
+	const hash = str => str.split('').reduce((prev, curr) => Math.imul(31, prev) + curr.charCodeAt(0) | 0, 0);
+	return hash(pinValue);
+}
+
+function myPinValidation(){
+	if(1477697 == getPinValue())
+	{
+	  document.getElementById("btnlogin").style.visibility = "visible";
+	} 
+	else
+	{
+	  document.getElementById("btnlogin").style.visibility = "hidden";
+	}
+}
+</script>
+
+</html>

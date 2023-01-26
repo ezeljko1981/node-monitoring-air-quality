@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="wclassth=device-wclassth, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <title>Air Quality</title>
+	<link rel="icon" href="/img/favicon.png">
+</head>
+<body>
+
+<div align="center">
+<div class="app" align="center">
+
+    <header class="header">
+	<table>
+		<tr>
+			<td><a class="headtext" href="/"><img class="icons" src="/img/icons8-good-quality-100.png" alt="radon"></a></td>
+			<td><h1>Air Quality</h1></td>
+		</tr>
+	</table>
+
+	</header>
+    <div class="docs">
+        <div class="docs-wrapper">
+		<div>
+
+<%
+	function getColorForValue(name, value){
+	switch(name){
+		case "battery":
+			if (value > 10) return "level-good";
+			if (value >= 0) return "level-poor";
+		break;
+		case "co2":
+			if (value >= 1000) return "level-poor"
+			else if (value >=  800) return "level-average"
+			else if (value >=  0) return "level-good";
+		break;
+		case "humidity":
+		  if (value >= 70) return "level-poor"
+			else if (value >= 60) return "level-average"
+			else if (value >= 30) return "level-good"
+			else if (value >= 25) return "level-average"
+			else if (value >= 0)  return "level-poor";
+		break;
+		case "pm1":
+			if (value >= 25) return "level-poor"
+			else if (value >= 10) return "level-average"
+			else if (value >=  0) return "level-good";
+		break;
+		case "pm25":
+			if (value >= 25) return "level-poor"
+			else if (value >= 10) return "level-average"
+			else if (value >=  0) return "level-good";
+		break;
+		case "radonShortTermAvg":
+			if (value >= 150) return "level-poor"
+			else if (value >= 100) return "level-average"
+			else if (value >=  0)  return "level-good";
+		break;
+		case "voc":
+			if (value >= 2000) return "level-poor"
+			else if (value >= 250)  return "level-average"
+			else if (value >=  0)   return "level-good";
+		break;
+	}
+}
+
+	function getBatteryLevelIcon(batteryLevelPercent){
+	  if (batteryLevelPercent > 50) return "icons8-full-battery-48.png"
+		else if (batteryLevelPercent > 20) return "icons8-battery-level-48.png"
+		else if (batteryLevelPercent > 10) return "icons8-low-battery-48.png"
+		else if (batteryLevelPercent >= 0) return "icons8-nearly-empty-battery-48.png";
+	}
+
+%>
+	<div style="halign:right; width: 100%; display: inline-block;">
+		<table>
+			<tr>
+				<td><a href="/devices/2960013870/latest-samples"><img class="icons" src="/img/icons8-sync-48.png" alt="sync"></a></td>
+				<td><a href="/logout"><img class="icons" src="/img/icons8-logout-rounded-30.png" alt="logout"></a></td>
+			</tr>
+		</table>
+	</div>
+
+<% if(data !== null) { %>
+<% const obj = JSON.parse(data);  %>
+	<div class="central-table">
+		<table>
+			<tr>
+				<td colspan="3">
+					<table>
+						<tr>
+							<td><img class="icons" src="/img/icons8-clock-48.png" alt="time"></td>
+							<td><% var d = new Date(obj.data.time * 1000).toLocaleString(undefined, {day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit', second: '2-digit'}); %>
+								<p><%=d%></p></td>
+						</tr>
+					</table>
+				  </td>
+				</tr>
+				  <tr>
+				    <td>
+						<img class="icons" src="/img/icons8-radon-64.png" alt="radon">
+						<p class="<%= getColorForValue("radonShortTermAvg",obj.data.radonShortTermAvg); %>">Radon: <br/><b><%= obj.data.radonShortTermAvg  %></b> (Bq/m<sup>2</sup>)</p>
+					</td>
+				    <td>
+						<img class="icons" src="/img/icons8-particle-48.png" alt="particle">
+						<p class="<%= getColorForValue("pm1",obj.data.pm1); %>">PM<sub>1</sub>: <br/><b><%= obj.data.pm1  %></b> (µg/m<sup>2</sup>)</p>
+					</td>
+				    <td>
+						<img class="icons" src="/img/icons8-particle-48.png" alt="particle">
+						<p class="<%= getColorForValue("pm25",obj.data.pm25); %>">PM<sub>2.5</sub>: <br/><b><%= obj.data.pm25  %></b> (µg/m<sup>2</sup>)</p>
+					</td>
+				  </tr>
+				  <tr>
+				    <td>
+						<img class="icons" src="/img/icons8-wind-48.png" alt="voc">
+						<p class="<%= getColorForValue("voc",obj.data.voc); %>">VOCs: <br/><b><%= obj.data.voc  %></b> (ppb)</p>
+					</td>
+				    <td>
+						<img class="icons" src="/img/icons8-air-quality-48.png" alt="co2">
+						<p class="<%= getColorForValue("co2",obj.data.co2); %>">CO<sub>2</sub>: <br/><b><%= obj.data.co2 %></b> (ppm)</p>
+					</td>
+				    <td>
+						<img class="icons" src="/img/icons8-humidity-48.png" alt="humidity">
+						<p class="<%= getColorForValue("humidity",obj.data.humidity); %>">Humidity: <br/><b><%= obj.data.humidity  %></b> (%)</p>
+					</td>
+				  </tr>
+				  <tr>
+				    <td>
+						<img class="icons" src="/img/icons8-pressure-gauge-48.png" alt="pressure	">
+						<p>Pressure: <br/><b><%= obj.data.pressure  %></b> (hPa)</p>
+					</td>
+				    <td>
+						<img class="icons" src="/img/icons8-hub-50.png" alt="hub">
+						<p><small>Relay Device Type: <br/><b><%= obj.data.relayDeviceType  %></b></small></p>
+					</td>
+				    <td>
+						<img class="icons" src="/img/<%= getBatteryLevelIcon(obj.data.battery); %>" alt="battery">
+						<p class="<%= getColorForValue("battery",obj.data.battery); %>">Battery: <br/><b><%= obj.data.battery %></b> (%)</p>
+					</td>
+				  </tr>
+				  <tr>
+				   <td colspan="3">
+						<small>Web application "Air Quality" created by <br/><a href="https://www.linkedin.com/in/zeljkoeremic/">Željko Eremić, PhD<a></small>
+				   </td>
+				  </tr>
+				</table>
+				</div>
+				<% } %>
+			</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
