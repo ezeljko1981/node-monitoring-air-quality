@@ -1,0 +1,22 @@
+header {
+  background-color: #01328F;
+  color: gold;
+  width: 100%;
+  height: 110px;
+  border-bottom: 1px solid gainsboro;
+}
+.level-good{
+	color: green;
+}
+.level-average{
+	color: orange;
+}
+.level-poor{
+	color: red;
+}
+.icons{
+    margin: 2px;
+}
+.table, td{
+	text-align: center;
+}
